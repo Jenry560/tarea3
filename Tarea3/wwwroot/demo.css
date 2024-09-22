@@ -1,0 +1,47 @@
+/* Estilo para el logo en la vista de marca en modo claro */
+.light-style .menu .app-brand.demo {
+  height: 64px; /* Altura del logo en el menú */
+}
+
+/* Estilo para el logo en la vista de marca en modo oscuro */
+.dark-style .menu .app-brand.demo {
+  height: 64px; /* Altura del logo en el menú */
+}
+
+/* Estilo del contenedor del logo de la marca */
+.app-brand-logo.demo {
+  -ms-flex-align: center; /* Alineación vertical en IE10 */
+  align-items: center; /* Alineación vertical en flexbox */
+  -ms-flex-pack: center; /* Alineación horizontal en IE10 */
+  justify-content: center; /* Alineación horizontal en flexbox */
+  display: -ms-flexbox; /* Flexbox en IE10 */
+  display: flex; /* Flexbox en otros navegadores */
+  width: 34px; /* Ancho del contenedor del logo */
+  height: 24px; /* Altura del contenedor del logo */
+}
+
+/* Estilo para el logo dentro del contenedor */
+.app-brand-logo.demo svg {
+  width: 35px; /* Ancho del logo SVG */
+  height: 24px; /* Altura del logo SVG */
+}
+
+/* Estilo del texto de la marca */
+.app-brand-text.demo {
+  font-size: 1.375rem; /* Tamaño de fuente del texto de la marca */
+}
+
+/* Contenedor para la demostración de diseño */
+.layout-demo-wrapper {
+  display: -webkit-box; /* Flexbox en versiones antiguas de WebKit */
+  display: -ms-flexbox; /* Flexbox en IE10 */
+  display: flex; /* Flexbox en otros navegadores */
+  -webkit-box-align: center; /* Alineación vertical en WebKit */
+  -ms-flex-align: center; /* Alineación vertical en IE10 */
+  align-items: center; /* Alineación vertical en flexbox */
+  -webkit-box-orient: vertical; /* Orientación vertical en WebKit */
+  -webkit-box-direction: normal; /* Dirección normal en WebKit */
+  -ms-flex-direction: column; /* Dirección de flexión en IE10 */
+  flex-direction: column; /* Dirección de flexión en flexbox */
+  margin-top: 1rem; /* Espacio superior del contenedor */
+}

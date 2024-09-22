@@ -1,0 +1,134 @@
+﻿@page "/"
+@using Tarea3.Components.Layout
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+@using Tarea3.models;
+@inject AccidenteService AccidenteService
+
+
+<PageTitle>Home</PageTitle>
+
+
+<Alert @ref="alert" Title="¿Estás seguro?" Message="Estas seguro que deseas eliminar el registro?"
+    OnConfirm="OnAlertConfirm" OnCancel="OnAlertCancel" />
+<div class="content_home animation_content">
+    <div class="col">
+        <div class="container_dash">
+
+
+            <CustomCard titulo="Total de accidentes" tituloColor="rgb(214, 209, 37)" parrafo="10" />
+            <CustomCard titulo="Total de vehículos" tituloColor="cornflowerblue" parrafo="10" />
+            <CustomCard titulo="Total de muertos" tituloColor="chocolate" parrafo="10" />
+            <CustomCard titulo="Total de heridos" tituloColor="crimson" parrafo="10" />
+
+        </div>
+
+        <button @onclick="navegarForm" class="boton">
+
+            Agregar
+        </button>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Fecha del accidente</th>
+                        <th>Descripción del accidente</th>
+                        <th>Costo económico estimado</th>
+                        <th>Número de muertos</th>
+                        <th>Número de heridos</th>
+                        <th>Cantidad de vehículos involucrados</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var accidente in accidentes)
+                    {
+                        <tr>
+                            <td>@accidente.Id</td>
+                            <td>@accidente.FechaAccidente.ToString("yyyy-MM-dd")</td>
+                            <td>@accidente.Descripcion</td>
+                            <td>@accidente.CostoEconomico.ToString("C")</td>
+                            <td>@accidente.NumeroMuertos</td>
+                            <td>@accidente.NumeroHeridos</td>
+                            <td>@accidente.CantidadVehiculos</td>
+                            <td class="action-icons">
+                                <a href="#" title="Editar"><i class="fas fa-edit"></i></a>
+                                <a href="#" title="Eliminar" @onclick="@(() => ShowAlert(accidente.Id))"><i
+                                        class="fas fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
+                    }
+                    <!-- Agrega más filas según sea necesario -->
+                </tbody>
+            </table>
+        </div>
+
+
+
+    </div>
+
+</div>
+
+
+@code {
+    private Alert? alert;
+    List<Accidente> accidentes = new List<Accidente>();
+    int idRegistroEliminar = 0;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await this.loadAccidentes();
+            StateHasChanged(); // Actualiza la interfaz de usuario si es necesario
+        }
+    }
+
+    private async Task loadAccidentes()
+    {
+        var accidentesLocal = await AccidenteService.LoadData();
+        this.accidentes = accidentesLocal;
+        Console.WriteLine(accidentes);
+
+    }
+    void navegarForm()
+    {
+        this.Navigation.NavigateTo("/form");
+    }
+
+    private async Task eliminarAccidente(int id)
+    {
+        var isDeleted = await AccidenteService.RemoveData(id);
+        if (isDeleted)
+        {
+            await loadAccidentes();
+        }
+        else
+        {
+            Console.WriteLine("No se elimino");
+        }
+    }
+
+    private void ShowAlert(int id)
+    {
+        idRegistroEliminar = id;
+        alert?.Show();
+    }
+
+    private async Task OnAlertConfirm(bool confirmed)
+    {
+        // Lógica cuando se confirma
+        if (confirmed)
+        {
+            await eliminarAccidente(idRegistroEliminar);
+        }
+    }
+
+    private void OnAlertCancel()
+    {
+
+    }
+
+}

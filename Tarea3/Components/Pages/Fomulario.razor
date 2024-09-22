@@ -1,0 +1,97 @@
+@page "/form"
+@using System.Text.Json
+@using Tarea3.models
+@rendermode InteractiveServer
+@inject AccidenteService AccidenteService
+@inject NavigationManager Navigation
+
+
+<PageTitle>Formulario</PageTitle>
+
+
+<Alert @ref="alert" Title="Exito" Message="Cambios guardados exitosamente!" OnConfirm="OnAlertConfirm"
+    OnCancel="OnAlertCancel" />
+
+<div class="container-form animation_content">
+    <i class="fas fa-car-crash" style="font-size: 50px"></i>
+    <h2>Registro de Accidente</h2>
+    <EditForm Model="@accidente" OnValidSubmit="SubmitForm">
+        <ValidationSummary />
+
+        <div class="form-group">
+            <label for="fechaAccidente">Fecha del Accidente</label>
+            <InputDate id="fechaAccidente" @bind-Value="accidente.FechaAccidente" />
+            <ValidationMessage For="@(() => accidente.FechaAccidente)" />
+        </div>
+        <div class="form-group">
+            <label for="descripcion">Descripción del Accidente</label>
+            <InputTextArea id="descripcion" @bind-Value="accidente.Descripcion" />
+            <ValidationMessage For="@(() => accidente.Descripcion)" />
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <label for="costo">Costo Económico Estimado</label>
+                <InputNumber id="costo" @bind-Value="accidente.CostoEconomico" />
+                <ValidationMessage For="@(() => accidente.CostoEconomico)" />
+            </div>
+            <div class="form-group">
+                <label for="numeroMuertos">Número de Muertos</label>
+                <InputNumber id="numeroMuertos" @bind-Value="accidente.NumeroMuertos" />
+                <ValidationMessage For="@(() => accidente.NumeroMuertos)" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <label for="numeroHeridos">Número de Heridos</label>
+                <InputNumber id="numeroHeridos" @bind-Value="accidente.NumeroHeridos" />
+                <ValidationMessage For="@(() => accidente.NumeroHeridos)" />
+
+            </div>
+            <div class="form-group">
+                <label for="cantidadVehiculos">Vehículos Involucrados</label>
+                <InputNumber id="cantidadVehiculos" @bind-Value="accidente.CantidadVehiculos" />
+                <ValidationMessage For="@(() => accidente.CantidadVehiculos)" />
+
+            </div>
+        </div>
+        <button type="submit">Registrar Accidente</button>
+        <DataAnnotationsValidator />
+
+    </EditForm>
+</div>
+
+@code {
+
+    private Alert? alert;
+    private DateTime minFecha = new DateTime(1900, 1, 1);
+    private Accidente accidente = new Accidente();
+
+    private async Task SubmitForm()
+    {
+        try
+        {
+            var isSaved = await AccidenteService.SaveData(accidente);
+            if (isSaved)
+            {
+                alert?.Show();
+                await Task.Delay(1000);
+                alert?.Hide();
+
+                Navigation.NavigateTo("/");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+        }
+    }
+    private void OnAlertConfirm(bool confirmed)
+    {
+
+    }
+
+    private void OnAlertCancel()
+    {
+
+    }
+}

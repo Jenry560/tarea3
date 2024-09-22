@@ -1,0 +1,21 @@
+<!-- Navbar -->
+<nav class="layout-navbar bg-navbar-theme">
+    <NavLink class="nav-item " href="/">
+        Tarea 3
+    </NavLink>
+
+    <div class="nav-item">
+        Jenry Jose Sanchez 2023-1080
+        <i class="fa-solid fa-user"></i>
+    </div>
+</nav>
+<!-- / Navbar -->
+
+<script>
+    const menu = document.querySelector('.layout-menu')
+    const icon = document.querySelector('.nav-icon')
+    console.log(icon)
+    icon.addEventListener('click', () => {
+        menu.classList.toggle('opened')
+    })
+</script>
