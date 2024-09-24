@@ -4,7 +4,7 @@
 @rendermode InteractiveServer
 @using Tarea3.models;
 @inject AccidenteService AccidenteService
-
+@inject IJSRuntime JS
 
 <PageTitle>Home</PageTitle>
 
@@ -57,6 +57,9 @@
                                 <a href="/form/@accidente.Id" title="Editar"><i class="fas fa-edit"></i></a>
                                 <a href="#" title="Eliminar" @onclick="@(() => ShowAlert(accidente.Id))"><i
                                         class="fas fa-trash-alt"></i></a>
+                                @* Imprimir *@
+                                <a href="#" title="Imprimir" @onclick="@(() => ImprimirReporte(accidente))"><i
+                                        class="fas fa-print"></i></a>
                             </td>
                         </tr>
                     }
@@ -70,7 +73,6 @@
     </div>
 
 </div>
-
 
 @code {
     private Alert? alert;
@@ -122,6 +124,17 @@
     {
         idRegistroEliminar = id;
         alert?.Show();
+    }
+
+    private async Task ImprimirReporte(Accidente accidenteSeleccionado)
+    {
+        // Utiliza JavaScript para imprimir el contenido del reporte
+        await JS.InvokeVoidAsync("printAccidenteReporte", accidenteSeleccionado.Id,
+        accidenteSeleccionado.FechaAccidente.ToString("yyyy-MM-dd"),
+        accidenteSeleccionado.Descripcion,
+        accidenteSeleccionado.CostoEconomico.ToString("C"), accidenteSeleccionado.NumeroMuertos,
+        accidenteSeleccionado.NumeroHeridos,
+        accidenteSeleccionado.CantidadVehiculos);
     }
 
     private async Task OnAlertConfirm(bool confirmed)

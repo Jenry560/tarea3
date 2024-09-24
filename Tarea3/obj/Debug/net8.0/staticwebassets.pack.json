@@ -25,6 +25,10 @@
       "PackagePath": "staticwebassets\\localStorage.js"
     },
     {
+      "Id": "D:\\Deskop\\Itla\\tarea3\\tarea3\\wwwroot\\reporte.js",
+      "PackagePath": "staticwebassets\\reporte.js"
+    },
+    {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.Tarea3.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },
