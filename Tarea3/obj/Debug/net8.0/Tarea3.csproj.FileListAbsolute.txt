@@ -24,3 +24,4 @@ D:\Deskop\Itla\tarea3\tarea3\obj\Debug\net8.0\refint\Tarea3.dll
 D:\Deskop\Itla\tarea3\tarea3\obj\Debug\net8.0\Tarea3.pdb
 D:\Deskop\Itla\tarea3\tarea3\obj\Debug\net8.0\Tarea3.genruntimeconfig.cache
 D:\Deskop\Itla\tarea3\tarea3\obj\Debug\net8.0\ref\Tarea3.dll
+D:\Deskop\Itla\tarea3\tarea3\obj\Debug\net8.0\Tarea3.sourcelink.json

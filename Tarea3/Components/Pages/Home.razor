@@ -16,10 +16,10 @@
         <div class="container_dash">
 
 
-            <CustomCard titulo="Total de accidentes" tituloColor="rgb(214, 209, 37)" parrafo="10" />
-            <CustomCard titulo="Total de vehículos" tituloColor="cornflowerblue" parrafo="10" />
-            <CustomCard titulo="Total de muertos" tituloColor="chocolate" parrafo="10" />
-            <CustomCard titulo="Total de heridos" tituloColor="crimson" parrafo="10" />
+            <CustomCard titulo="Total de accidentes" tituloColor="rgb(214, 209, 37)" cantidad="@totalAccidentes" />
+            <CustomCard titulo="Total de vehículos" tituloColor="cornflowerblue" cantidad="@totalVehiculos" />
+            <CustomCard titulo="Total de muertos" tituloColor="chocolate" cantidad="@totalMuertos" />
+            <CustomCard titulo="Total de heridos" tituloColor="crimson" cantidad="@totalHeridos" />
 
         </div>
 
@@ -54,7 +54,7 @@
                             <td>@accidente.NumeroHeridos</td>
                             <td>@accidente.CantidadVehiculos</td>
                             <td class="action-icons">
-                                <a href="#" title="Editar"><i class="fas fa-edit"></i></a>
+                                <a href="/form/@accidente.Id" title="Editar"><i class="fas fa-edit"></i></a>
                                 <a href="#" title="Eliminar" @onclick="@(() => ShowAlert(accidente.Id))"><i
                                         class="fas fa-trash-alt"></i></a>
                             </td>
@@ -63,8 +63,8 @@
                     <!-- Agrega más filas según sea necesario -->
                 </tbody>
             </table>
-        </div>
 
+        </div>
 
 
     </div>
@@ -74,6 +74,10 @@
 
 @code {
     private Alert? alert;
+    int totalAccidentes = 0;
+    int totalVehiculos = 0;
+    int totalMuertos = 0;
+    int totalHeridos = 0;
     List<Accidente> accidentes = new List<Accidente>();
     int idRegistroEliminar = 0;
 
@@ -90,7 +94,10 @@
     {
         var accidentesLocal = await AccidenteService.LoadData();
         this.accidentes = accidentesLocal;
-        Console.WriteLine(accidentes);
+        this.totalAccidentes = accidentesLocal.Count;
+        this.totalVehiculos = accidentesLocal.Sum(x => x.CantidadVehiculos);
+        this.totalMuertos = accidentesLocal.Sum(x => x.NumeroMuertos);
+        this.totalHeridos = accidentesLocal.Sum(x => x.NumeroHeridos);
 
     }
     void navegarForm()

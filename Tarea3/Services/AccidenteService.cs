@@ -16,13 +16,32 @@ public class AccidenteService
     {
         try
         {
+
+
             var accidentes = await LoadData();
             if (accidentes == null)
             {
                 accidentes = new List<Accidente>();
             }
-            accidente.Id = accidentes.Count + 1;
-            accidentes.Add(accidente);
+            // Editar
+            if (accidente.Id != 0)
+            {
+                accidentes = accidentes.Select(a =>
+                {
+                    if (a.Id == accidente.Id)
+                    {
+                        return accidente;
+                    }
+                    return a;
+                }
+                ).ToList();
+            }
+            else
+            {
+                // Nuevo
+                accidente.Id = accidentes.Count + 1;
+                accidentes.Add(accidente);
+            }
             var accidentesJson = JsonSerializer.Serialize(accidentes);
             await _js.InvokeVoidAsync("localStorageHelper.setItem", "data_accidente", accidentesJson);
             return true;
@@ -72,6 +91,26 @@ public class AccidenteService
         {
             Console.WriteLine(ex);
             return false;
+        }
+    }
+
+
+    public async Task<Accidente?> GetAccidenteById(int id)
+    {
+
+        try
+        {
+            var accidentes = await LoadData();
+            if (accidentes == null) return null;
+            var accidente = accidentes.Where(x => x.Id == id).FirstOrDefault();
+
+            if (accidente == null) return null;
+            return accidente;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            return null;
         }
     }
 }

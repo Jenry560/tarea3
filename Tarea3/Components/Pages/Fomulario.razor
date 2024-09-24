@@ -1,4 +1,4 @@
-@page "/form"
+@page "/form/{Id:int?}"
 @using System.Text.Json
 @using Tarea3.models
 @rendermode InteractiveServer
@@ -14,7 +14,7 @@
 
 <div class="container-form animation_content">
     <i class="fas fa-car-crash" style="font-size: 50px"></i>
-    <h2>Registro de Accidente</h2>
+    <h2>@(Id == 0 ? "Registrar Accidente" : "Editar Accidente")</h2>
     <EditForm Model="@accidente" OnValidSubmit="SubmitForm">
         <ValidationSummary />
 
@@ -54,18 +54,43 @@
 
             </div>
         </div>
-        <button type="submit">Registrar Accidente</button>
+        <button type="submit">Guardar Cambios</button>
         <DataAnnotationsValidator />
 
     </EditForm>
 </div>
 
 @code {
-
+    [Parameter] public int Id { get; set; }
     private Alert? alert;
     private DateTime minFecha = new DateTime(1900, 1, 1);
     private Accidente accidente = new Accidente();
 
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await this.editAccidente();
+            StateHasChanged(); // Actualiza la interfaz de usuario si es necesario
+        }
+    }
+
+
+    private async Task editAccidente()
+    {
+        if (Id > 0)
+        {
+            var accidenteById = await AccidenteService.GetAccidenteById(Id);
+            if (accidenteById == null)
+            {
+                Navigation.NavigateTo("/");
+                return;
+            }
+
+            accidente = accidenteById;
+        }
+    }
     private async Task SubmitForm()
     {
         try
